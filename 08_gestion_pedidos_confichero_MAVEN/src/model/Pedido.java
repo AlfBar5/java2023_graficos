@@ -36,4 +36,14 @@ public class Pedido {
 	private double precio;
 	
 	
+	//para que se vea el objeto producto y no el objeto hashmodel: pedidosService@3424234 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return producto+"  --  "+fechaPedido+"  --  "+precio+" €";
+	}
+	
+	
+	
+	
 }

@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import model.Pedido;
 import service.PedidosService;
+import view.adapters.ListaPedidosModel;
 
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -16,6 +17,8 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.JLabel;
 
 public class jMenu extends JFrame {
 
@@ -50,10 +53,6 @@ public class jMenu extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextArea textAreaPedidos = new JTextArea();
-		textAreaPedidos.setBounds(214, 35, 270, 389);
-		contentPane.add(textAreaPedidos);
-		
 		//Boton Nuevo pedido
 		JButton btnNuevoPedido = new JButton("NUEVO PEDIDO");
 		btnNuevoPedido.addActionListener(new ActionListener() {
@@ -83,11 +82,25 @@ public class jMenu extends JFrame {
 		
 		
 		
+		//Subir el Jlist arriba si da error
+		JList lstPedidos = new JList<>();
+		
+		lstPedidos.setBounds(267, 58, 214, 346);
+		contentPane.add(lstPedidos);
+		 
+		
 		//Botón Mostrar todos
 		JButton btnMostrarTodos = new JButton("MOSTRAR TODOS");
 		btnMostrarTodos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//instanciamos modelo de datos y se lo asignamos al jList
+				ListaPedidosModel model=new ListaPedidosModel();
+				lstPedidos.setModel(model);
+				
+				
+				/*
+				///Con un textArea
 				//creamos la instancia de PedidosService
 				PedidosService service = new PedidosService();
 				
@@ -100,11 +113,19 @@ public class jMenu extends JFrame {
 					textAreaPedidos.setText(textAreaPedidos.getText()+pedido.getProducto()+"   --   "+pedido.getFechaPedido()+"   --   "+pedido.getPrecio()+" €"+System.lineSeparator());
 				}
 				
+				*/
+				
 			}
 		});
 		btnMostrarTodos.setFont(new Font("Verdana", Font.BOLD, 13));
 		btnMostrarTodos.setBounds(20, 192, 178, 36);
 		contentPane.add(btnMostrarTodos);
+		
+		
+		
+		
+		
+		
 		
 		
 		
@@ -128,7 +149,12 @@ public class jMenu extends JFrame {
 		btnSalir.setBounds(20, 388, 178, 36);
 		contentPane.add(btnSalir);
 		
+		
+		
+		JLabel lblNewLabel = new JLabel("PEDIDOS:");
+		lblNewLabel.setBounds(265, 35, 46, 14);
+		contentPane.add(lblNewLabel);
+		
 		this.setVisible(true);
 	}
-
 }
