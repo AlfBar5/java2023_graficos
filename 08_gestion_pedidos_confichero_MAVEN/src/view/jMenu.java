@@ -19,6 +19,10 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
 import javax.swing.JLabel;
+import java.awt.Color;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class jMenu extends JFrame {
 
@@ -45,6 +49,21 @@ public class jMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public jMenu() {
+		
+		//Subir el Jlist arriba si da error
+		JList<Pedido> lstPedidos = new JList<>();
+		
+		//método para hacer algo cuando selecciono un elemento en la lista
+		lstPedidos.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				
+				//recogida del pedido seleccionado
+				Pedido pedido=lstPedidos.getSelectedValue();
+				JOptionPane.showMessageDialog(jMenu.this, "Pedido seleccionado"+pedido.getProducto()+" - "+pedido.getFechaPedido()+" - "+pedido.getPrecio());
+				
+			}
+		});
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 525, 487);
 		contentPane = new JPanel();
@@ -80,14 +99,13 @@ public class jMenu extends JFrame {
 		btnPedidoReciente.setBounds(20, 107, 178, 36);
 		contentPane.add(btnPedidoReciente);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(267, 70, 215, 313);
+		contentPane.add(scrollPane);
 		
 		
-		//Subir el Jlist arriba si da error
-		JList lstPedidos = new JList<>();
+		scrollPane.setViewportView(lstPedidos);
 		
-		lstPedidos.setBounds(267, 58, 214, 346);
-		contentPane.add(lstPedidos);
-		 
 		
 		//Botón Mostrar todos
 		JButton btnMostrarTodos = new JButton("MOSTRAR TODOS");
@@ -152,8 +170,43 @@ public class jMenu extends JFrame {
 		
 		
 		JLabel lblNewLabel = new JLabel("PEDIDOS:");
-		lblNewLabel.setBounds(265, 35, 46, 14);
+		lblNewLabel.setForeground(new Color(0, 128, 0));
+		lblNewLabel.setFont(new Font("Verdana Pro", Font.BOLD, 12));
+		lblNewLabel.setBounds(267, 35, 105, 23);
 		contentPane.add(lblNewLabel);
+		
+		
+		//ELIMINA PEDIDO DEL JLIST
+		JButton btnEliminarPedido = new JButton("ELIMINAR PEDIDO");
+		btnEliminarPedido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			
+				
+				//Recoger el pedido seleccionado en el jList
+				Pedido pedido= lstPedidos.getSelectedValue();
+				
+				//llamar al método eliminarPedido() de PedidosService
+				PedidosService service= new PedidosService();
+				service.eliminarPedido(pedido);
+				
+				//para actualizar la lista
+				lstPedidos.setModel(new ListaPedidosModel());
+		
+				
+			}
+			
+			
+		});
+		btnEliminarPedido.setFont(new Font("Verdana Pro", Font.BOLD, 11));
+		btnEliminarPedido.setBounds(333, 394, 149, 30);
+		contentPane.add(btnEliminarPedido);
+		
+		
+		
+		
+		
+		
 		
 		this.setVisible(true);
 	}

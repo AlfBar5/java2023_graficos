@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import model.Pedido;
@@ -170,6 +171,35 @@ public class PedidosService {
 		return getPedidos() //Stream<Pedido>
 				.toList();
 	}
+	
+	
+	
+	//Eliminar un pedido. Le pasamos el objeto pedido
+	public void eliminarPedido(Pedido p) {
+		
+		//todos los pedidos
+		List<String> pedidos=getPedidos()
+		//recuperar todos los pedidos menos el que queremos eliminar !
+		.filter(ped->!(ped.getProducto().equals(p.getProducto())&&
+				ped.getFechaPedido().equals(p.getFechaPedido())&&
+				ped.getPrecio()==p.getPrecio())) //Stream<Pedido>
+		.map(ped->ped.getProducto()+","+ped.getFechaPedido()+","+ped.getPrecio()) // Stream<String>	//transformar a objetos String todos los pedidos (menos el que hemos eliminado)     
+		.collect(Collectors.toList()); //generar una lista, lo mismo que toList()
+		
+		//volcar la lista en el fichero json
+		try {
+			Files.write(Path.of(dir), pedidos);
+			
+		}catch(IOException ex){
+			ex.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	
+	
 	
 	
 }
