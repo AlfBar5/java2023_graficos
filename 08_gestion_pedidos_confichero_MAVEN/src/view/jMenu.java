@@ -59,7 +59,10 @@ public class jMenu extends JFrame {
 				
 				//recogida del pedido seleccionado
 				Pedido pedido=lstPedidos.getSelectedValue();
-				JOptionPane.showMessageDialog(jMenu.this, "Pedido seleccionado"+pedido.getProducto()+" - "+pedido.getFechaPedido()+" - "+pedido.getPrecio());
+				if(pedido != null) {
+					JOptionPane.showMessageDialog(jMenu.this, "Pedido seleccionado"+pedido.getProducto()+" - "+pedido.getFechaPedido()+" - "+pedido.getPrecio());
+				}
+				
 				
 			}
 		});
